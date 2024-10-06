@@ -17,7 +17,7 @@ from .models import UserProfile
 from .forms import UserForm, UserProfileForm
 from .forms import CustomUserCreationForm
 
-
+# добавляю в гит все не получается
 @login_required
 def index(request):
     incomes = Income.objects.filter(user=request.user)
