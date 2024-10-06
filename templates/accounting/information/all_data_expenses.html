@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Все данные по расходам</title>
+</head>
+<body>
+<h1>Все данные по расходам</h1>
+
+<!-- Общая сумма по расходам -->
+<h2>1. Общая сумма по расходам</h2>
+<p>Сумма расходов: <span id="total-expenses">{{ total_expenses }}</span></p>
+<img src="/static/expenses_over_time.png" alt="Expenses Over Time">
+<img src="/static/expenses_by_category.png" alt="Expenses by Category">
+
+<!-- Сумма расходов за выбранный период -->
+<h2>2. Сумма расходов за выбранный период</h2>
+<label for="start-date">С:</label>
+<input type="date" id="start-date">
+<label for="end-date">По:</label>
+<input type="date" id="end-date">
+<button onclick="calculatePeriodExpenses()">Рассчитать</button>
+<p>Сумма расходов за выбранный период: <span id="period-expenses"></span></p>
+
+<!-- Баланс на сегодня за весь период -->
+<h2>3. Баланс на сегодня за весь период</h2>
+<p>Баланс: <span id="total-balance">{{ total_balance }}</span></p>
+
+<!-- Баланс на выбранную дату -->
+<h2>4. Баланс на выбранную дату</h2>
+<label for="balance-start-date">С:</label>
+<input type="date" id="balance-start-date">
+<label for="balance-end-date">По:</label>
+<input type="date" id="balance-end-date">
+<button onclick="calculateBalance()">Рассчитать</button>
+<p>Баланс за выбранный период: <span id="period-balance"></span></p>
+
+<script>
+// Преобразование данных из Django в формат JSON
+const expenses = JSON.parse('{{ expenses|escapejs }}');
+const incomes = JSON.parse('{{ incomes|escapejs }}');
+
+// Функция для расчета суммы расходов за выбранный период
+function calculatePeriodExpenses() {
+const startDate = new Date(document.getElementById('start-date').value);
+const endDate = new Date(document.getElementById('end-date').value);
+
+const periodExpenses = expenses.filter(expense => {
+const expenseDate = new Date(expense.date);
+return expenseDate >= startDate && expenseDate <= endDate;
+}).reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+
+document.getElementById('period-expenses').textContent = periodExpenses.toFixed(2);
+}
+
+// Функция для расчета баланса за выбранный период
+function calculateBalance() {
+const startDate = new Date(document.getElementById('balance-start-date').value);
+const endDate = new Date(document.getElementById('balance-end-date').value);
+
+const periodExpenses = expenses.filter(expense => {
+const expenseDate = new Date(expense.date);
+return expenseDate >= startDate && expenseDate <= endDate;
+}).reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+
+const periodIncomes = incomes.filter(income => {
+const incomeDate = new Date(income.date);
+return incomeDate >= startDate && incomeDate <= endDate;
+}).reduce((sum, income) => sum + parseFloat(income.amount), 0);
+
+const periodBalance = periodIncomes - periodExpenses;
+document.getElementById('period-balance').textContent = periodBalance.toFixed(2);
+}
+</script>
+</body>
+</html>

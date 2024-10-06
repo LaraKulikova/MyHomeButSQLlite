@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Доходы</title>
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<h1>Доходы</h1>
+<table>
+<thead>
+<tr>
+<th>Категория</th>
+<th>Сумма</th>
+<th>Дата</th>
+<th>Действие</th>
+</tr>
+</thead>
+<tbody>
+{% for income in incomes %}
+<tr>
+<td>
+{% if income.category == 'salary' %}
+Зарплата
+{% elif income.category == 'credit' %}
+Кредит
+{% elif income.category == 'deposit' %}
+Депозит
+{% elif income.category == 'other' %}
+Прочие доходы
+{% endif %}
+</td>
+<td>{{ income.amount }}</td>
+<td>{{ income.date }}</td>
+<td>
+<a href="{% url 'edit_income' income.id %}">Редактировать</a>
+<button onclick="openIncomeModal({{ income.id }})">Удалить</button>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<a href="{% url 'add_income' %}">Добавить доход</a>
+<a href="{% url 'index' %}">Перейти на главную страницу</a>
+
+<!-- Модальное окно -->
+<div id="deleteModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeModal()">×</span>
+<h2>Удалить доход</h2>
+<p>Вы уверены, что хотите удалить этот доход?</p>
+<form id="deleteForm" method="post">
+{% csrf_token %}
+<button type="submit">Удалить</button>
+</form>
+<button onclick="closeModal()">Отмена</button>
+</div>
+</div>
+
+<script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

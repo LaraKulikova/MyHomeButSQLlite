@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Данные по автомобилю</title>
+<style>
+table {
+width: 100%;
+border-collapse: collapse;
+}
+th, td {
+border: 1px solid black;
+padding: 8px;
+text-align: left;
+}
+th {
+background-color: #f2f2f2;
+}
+</style>
+</head>
+<body>
+<h1>Данные по автомобилю</h1>
+<form method="post" action="{% url 'update_car_expenses' %}">
+{% csrf_token %}
+<table>
+<thead>
+<tr>
+<th>Наименование автомобиля</th>
+<th>Пробег</th>
+<th>Дата расхода</th>
+<th>Сумма расхода</th>
+<th>Подкатегория</th>
+<th>Примечание</th>
+</tr>
+</thead>
+<tbody>
+{% for expense in car_expenses %}
+{% if expense.category == 'transport' %}
+<tr>
+<td><input type="text" name="car_name_{{ expense.id }}" value="{{ expense.car_name }}"></td>
+<td><input type="number" name="mileage_{{ expense.id }}" value="{{ expense.mileage }}"></td>
+<td>{{ expense.date }}</td>
+<td>{{ expense.amount }}</td>
+<td>
+{% if expense.subcategory == 'car_service' %}
+Расходы на ремонт и ТО автомобиля (без запчастей)
+{% elif expense.subcategory == 'spare_parts' %}
+Покупка запчастей и расходных материалов
+{% elif expense.subcategory == 'atocosmetics' %}
+Автокосметика
+{% elif expense.subcategory == 'carwash' %}
+Мойка и уборка автомобиля
+{% elif expense.subcategory == 'other_for_car' %}
+Другие расходы на автомобиль
+{% endif %}
+</td>
+<td><input type="text" name="note_{{ expense.id }}" value="{{ expense.note }}"></td>
+</tr>
+{% endif %}
+{% endfor %}
+</tbody>
+</table>
+<button type="submit">Сохранить изменения</button>
+</form>
+<br>
+<a href="{% url 'index' %}">
+<button type="button">Перейти на главную страницу</button>
+</a>
+</body>
+</html>

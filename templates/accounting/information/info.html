@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Информация</title>
+<style>
+.container {
+display: flex;
+}
+.left, .right {
+width: 50%;
+padding: 10px;
+}
+.iframe-container {
+margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+<h1>Информация</h1>
+<div class="container">
+<div class="left">
+<h2>Навигация</h2>
+<ul>
+<li><a href="http://localhost:8000/all_data_expenses/">Данные по расходам</a></li>
+<li><a href="http://localhost:8000/all_data_car/1/">Данные по автомобилю</a></li>
+<li><a href="http://localhost:8000/index/">Главная страница</a></li>
+</ul>
+</div>
+<div class="right">
+<div class="iframe-container">
+<h2>Курсы валют НБРБ на сегодня</h2>
+<table id="currencyTable" border="1" width="300">
+<thead>
+<tr>
+<th>Валюта</th>
+<th>Курс</th>
+</tr>
+</thead>
+<tbody>
+<!-- Data will be loaded here -->
+</tbody>
+</table>
+</div>
+<div class="iframe-container">
+<h2>Информация по кредитам</h2>
+<p>Информация по кредитам недоступна. Пожалуйста, посетите <a href="https://myfin.by/kredity/potrebitelskie?utm_source=myfin&utm_medium=organic&utm_campaign=menu">myfin.by</a> для получения информации.</p>
+</div>
+<div class="iframe-container">
+<h2>Курсы валют в обменниках</h2>
+<p>Информация по курсам валют в обменниках недоступна. Пожалуйста, посетите <a href="https://myfin.by/currency/minsk?utm_source=myfin&utm_medium=organic&utm_campaign=menu&working=0">myfin.by</a> для получения информации.</p>
+</div>
+</div>
+</div>
+<script src="{% static 'js/scriptExchangeRate.js' %}"></script>
+</body>
+</html>

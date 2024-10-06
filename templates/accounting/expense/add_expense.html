@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Добавить расход</title>
+{% load static %}
+<script src="{% static 'js/dynamic_subcategories.js' %}"></script>
+</head>
+<body>
+<h1>Добавить расход</h1>
+<form method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<button type="submit">Сохранить</button>
+<br>
+</form>
+</body>
+</html>

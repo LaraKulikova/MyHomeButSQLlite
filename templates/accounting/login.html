@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Домашняя бухгалтерия</title>
+<style>
+body {
+    background-size: cover;
+}
+
+body {
+    background-image: url('/media/pictures/knigi.jpg');
+}
+
+.center-box {
+background-color: lightyellow;
+border: 4px double black;
+width: 300px;
+margin: 100px auto;
+padding: 20px;
+text-align: center;
+}
+.center-box h1 {
+margin-bottom: 20px;
+}
+.center-box form {
+display: flex;
+flex-direction: column;
+}
+.center-box label, .center-box input, .center-box button, .center-box a {
+margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+<div class="center-box">
+<h1>Домашняя бухгалтерия</h1>
+<form method="post">
+{% csrf_token %}
+<label for="username">Логин:</label>
+<input type="text" name="username" id="username" required>
+<label for="password">Пароль:</label>
+<input type="password" name="password" id="password" required>
+<button type="submit">Войти</button>
+</form>
+{% if error %}
+<p>{{ error }}</p>
+<a href="{% url 'register' %}">Зарегистрировать пользователя?</a>
+{% endif %}
+<a href="{% url 'register' %}">Регистрация</a>
+</div>
+</body>
+</html>

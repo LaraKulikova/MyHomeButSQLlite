@@ -1,0 +1,184 @@
+ {% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Расходы за текущий месяц</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<h1>Расходы за текущий месяц</h1>
+<table>
+<thead>
+<tr>
+<th>Категория</th>
+<th>Подкатегория</th>
+<th>Сумма</th>
+<th>Дата</th>
+<th>Действие</th>
+</tr>
+</thead>
+<tbody>
+{% for expense in expenses %}
+<tr>
+<td>
+{% if expense.category == 'utilities' %}
+Коммунальные платежи
+{% elif expense.category == 'communication' %}
+Мобильная связь, интернет, телевидение
+{% elif expense.category == 'loan' %}
+Оплата кредита
+{% elif expense.category == 'transport' %}
+Расходы на транспорт
+{% elif expense.category == 'food' %}
+Продукты питания
+{% elif expense.category == 'cleaning' %}
+Уборка
+{% elif expense.category == 'entertainment' %}
+Развлечения
+{% elif expense.category == 'other' %}
+Прочие расходы
+{% endif %}
+</td>
+<td>
+{% if expense.category == 'utilities' %}
+{% if expense.subcategory == 'electricity' %}
+Электроэнергия
+{% elif expense.subcategory == 'rent' %}
+Квартплата
+{% elif expense.subcategory == 'tax' %}
+Налог на квартиру
+{% endif %}
+{% elif expense.category == 'communication' %}
+{% if expense.subcategory == 'mobile' %}
+Мобильная связь
+{% elif expense.subcategory == 'tv' %}
+Телевидение
+{% elif expense.subcategory == 'phone' %}
+Домашний телефон
+{% elif expense.subcategory == 'internet' %}
+Интернет
+{% endif %}
+{% elif expense.category == 'loan' %}
+{% if expense.subcategory == 'consumer_loan' %}
+Кредит на потребительские нужды
+{% elif expense.subcategory == 'installment' %}
+Рассрочка
+{% elif expense.subcategory == 'car_loan' %}
+Кредит на покупку автомобиля
+{% elif expense.subcategory == 'housing_loan' %}
+Кредит на покупку жилья
+{% endif %}
+{% elif expense.category == 'transport' %}
+{% if expense.subcategory == 'public_transport' %}
+Общественный транспорт
+{% elif expense.subcategory == 'car_service' %}
+Расходы на ремонт и ТО автомобиля (без запчастей)
+{% elif expense.subcategory == 'bike' %}
+Расходы на обслуживание и ремонт велосипеда
+{% elif expense.subcategory == 'spare_parts' %}
+Покупка запчастей и расходных материалов
+{% elif expense.subcategory == 'atocosmetics' %}
+Автокосметика
+{% elif expense.subcategory == 'carwash' %}
+Мойка и уборка автомобиля
+{% elif expense.subcategory == 'other_for_car' %}
+Другие расходы на автомобиль
+{% endif %}
+{% elif expense.category == 'food' %}
+{% if expense.subcategory == 'bread' %}
+Хлеб, выпечка
+{% elif expense.subcategory == 'milk_eggs' %}
+Молоко, яйца
+{% elif expense.subcategory == 'frozen_food' %}
+Замороженные полуфабрикаты
+{% elif expense.subcategory == 'meat_poultry' %}
+Мясо, птица, колбасы
+{% elif expense.subcategory == 'fish_seafood' %}
+Рыба и морепродукты
+{% elif expense.subcategory == 'coffee_tea' %}
+Кофе, чай
+{% elif expense.subcategory == 'water_drinks' %}
+Вода, напитки
+{% elif expense.subcategory == 'grains_pasta_sugar' %}
+Крупы, макароны, сахар
+{% elif expense.subcategory == 'chips_nuts_snacks' %}
+Чипсы, орехи, снеки
+{% elif expense.subcategory == 'chocolate_candies' %}
+Шоколад, конфеты
+{% elif expense.subcategory == 'pet_food' %}
+Еда для домашнего любимца
+{% elif expense.subcategory == 'other_goods' %}
+Прочие товары
+{% endif %}
+{% elif expense.category == 'cleaning' %}
+{% if expense.subcategory == 'laundry' %}
+Средства для стирки
+{% elif expense.subcategory == 'cleaning' %}
+Средства для уборки
+{% elif expense.subcategory == 'fertilizers' %}
+Удобрения
+{% elif expense.subcategory == 'other_chemicals' %}
+Прочая химия
+{% endif %}
+{% elif expense.category == 'entertainment' %}
+{% if expense.subcategory == 'sports' %}
+Спорт
+{% elif expense.subcategory == 'travel' %}
+Путешествия
+{% elif expense.subcategory == 'cinema_theater' %}
+Кино, театры
+{% elif expense.subcategory == 'restaurants_cafes' %}
+Рестораны, кафе
+{% elif expense.subcategory == 'miscellaneous' %}
+Иное
+{% endif %}
+{% elif expense.category == 'other' %}
+{% if expense.subcategory == 'education' %}
+Обучение
+{% elif expense.subcategory == 'miscellaneous' %}
+Иное
+{% endif %}
+{% endif %}
+</td>
+<td>{{ expense.amount }}</td>
+<td>{{ expense.date }}</td>
+<td>
+<a href="{% url 'edit_expense' expense.id %}">Редактировать</a>
+<button onclick="openExpenseModal({{ expense.id }})">Удалить</button>
+</td>
+</tr>
+{% endfor %}
+<tr>
+<td colspan="2" style="text-align: right;"><strong>Всего расходов за текущий месяц:</strong></td>
+<td><strong>{{ total_expenses_current_month }}</strong></td>
+<td colspan="2"></td>
+</tr>
+<tr>
+<td colspan="2" style="text-align: right;"><strong>Всего расходов за весь период:</strong></td>
+<td><strong>{{ total_expenses_all_time }}</strong></td>
+<td colspan="2"></td>
+</tr>
+</tbody>
+</table>
+<a href="{% url 'add_expense' %}">Добавить расход</a>
+<a href="{% url 'index' %}">Перейти на главную страницу</a>
+
+<!-- Модальное окно -->
+<div id="deleteModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeModal()">×</span>
+<h2>Удалить расход</h2>
+<p>Вы уверены, что хотите удалить этот расход?</p>
+<form id="deleteForm" method="post">
+{% csrf_token %}
+<button type="submit">Удалить</button>
+</form>
+<button onclick="closeModal()">Отмена</button>
+</div>
+</div>
+
+<script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

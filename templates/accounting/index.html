@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Домашняя бухгалтерия</title>
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div class="user-info">
+<img src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}/media/pictures/CatInGlass.jpg{% endif %}" alt="Аватар пользователя" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
+<span>Личный кабинет пользователя {{ user.first_name|default:user.username }}</span>
+</div>
+<div class="links">
+<button onclick="window.location.href='{% url 'personal_data' %}'">Персональные данные пользователя</button>
+<button onclick="window.location.href='{% url 'logout' %}'">Выход</button> <!-- Ссылка для выхода -->
+</div>
+</div>
+<div class="button-container">
+<button onclick="window.location.href='{% url 'expenses' %}'">Расходы</button>
+<button onclick="window.location.href='{% url 'incomes' %}'">Доходы</button>
+<button onclick="window.location.href='{% url 'info' %}'">Информация</button>
+</div>
+</div>
+<div class="footer">
+Приложение разработано компанией Домашний очаг
+</div>
+</body>
+</html>

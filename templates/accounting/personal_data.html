@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Персональные данные пользователя</title>
+<style>
+body {
+background-color: #058240;
+font-family: Arial, sans-serif;
+}
+.container {
+background-color: #FEE3A2;
+padding: 20px;
+border-radius: 10px;
+margin: 20px;
+}
+.personal-data {
+margin-top: 20px;
+}
+.footer {
+margin-top: 20px;
+text-align: center;
+font-size: 0.9em;
+color: #555;
+background-color: #87C159;
+padding: 10px;
+border-radius: 10px;
+}
+#edit-form {
+display: none;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="personal-data">
+<h2>Персональные данные пользователя</h2>
+<img src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}/media/pictures/CatInGlass.jpg{% endif %}" alt="Аватар пользователя" style="width: 100px; height: 100px; border-radius: 50%;">
+<p><strong>Имя:</strong> {{ user.first_name }}</p>
+<p><strong>Отчество:</strong> {{ user.userprofile.middle_name }}</p>
+<p><strong>Фамилия:</strong> {{ user.last_name }}</p>
+<p><strong>Адрес электронной почты:</strong> {{ user.email }}</p>
+<p><strong>Телефон:</strong> {{ user.userprofile.phone }}</p>
+<button onclick="document.getElementById('edit-form').style.display='block'">Изменить</button>
+<button onclick="window.location.href='{% url 'index' %}'">Перейти в личный кабинет</button>
+</div>
+<div id="edit-form" style="display:none;">
+<form method="post" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
+{% csrf_token %}
+<label for="avatar">Аватар:</label>
+<input type="file" id="avatar" name="avatar">
+
+<label for="first_name">Имя:</label>
+<input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+
+<label for="middle_name">Отчество:</label>
+<input type="text" id="middle_name" name="middle_name" value="{{ user.userprofile.middle_name }}">
+
+<label for="last_name">Фамилия:</label>
+<input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+
+<label for="email">Адрес электронной почты:</label>
+<input type="email" id="email" name="email" value="{{ user.email }}">
+
+<label for="phone">Телефон:</label>
+<input type="text" id="phone" name="phone" value="{{ user.userprofile.phone }}">
+
+<button type="submit">Сохранить</button>
+</form>
+</div>
+</div>
+<div class="footer">
+Приложение разработано компанией Домашний очаг
+</div>
+</body>
+</html>
