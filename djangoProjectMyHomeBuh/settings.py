@@ -137,7 +137,7 @@ LOGOUT_REDIRECT_URL = 'login'
 #     'ENGINE': 'django.db.backends.mysql',
 #     'NAME': 'homebuh',
 #     'USER': 'root',
-#     'PASSWORD': 'TimaCat15092023$',
+#     'PASSWORD': 'Mypassword',
 #     'HOST': 'localhost',
 #     'PORT': '3306',
 #     }
